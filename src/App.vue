@@ -1,15 +1,14 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <Brain width="10" height="10" start="2" destination="97" weightModificationOnFailure="-2"/>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Brain from './components/Brain.vue'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    Brain
   }
 }
 </script>
