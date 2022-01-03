@@ -1,6 +1,6 @@
 const FilterAllNeighboursStrategy = {
-    run: function run(neighbours) {
-        return neighbours;
+    run: function run() {
+        return true;
     },
     name: 'allNeighbours',
     default: true,
