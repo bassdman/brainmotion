@@ -1,5 +1,5 @@
 <template>
-  <Brain width="10" height="10" start="2" destination="97" weightModificationOnFailure="-2"/>
+  <Brain :width="10" :height="10" :start="2" :destination="97" :weightModificationOnFailure="-2"/>
 </template>
 
 <script>

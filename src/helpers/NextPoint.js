@@ -1,8 +1,9 @@
-function nextPoint(current, points) {
+function nextPoint(current, points, strategiesStore) {
     const currentExtended = getPoint(current, points);
+    const filterStrategy = strategiesStore.getters.get('filterNeighbours');
     const neighboursExtended = currentExtended.neighbours.map((n) =>
         getPoint(n, points)
-    ).filter(p => !p.visited && p.type !== 'start');
+    ).filter(filterStrategy.run);
 
     if (neighboursExtended.length == 0)
         return false;

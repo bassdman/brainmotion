@@ -24,6 +24,8 @@
       </li>
     </ul>
   </div>
+  <StrategyPanel v-bind:config="config" @updatestrategies="updateStrategies">
+  </StrategyPanel>
 </template>
 
 <script>
@@ -31,6 +33,10 @@ import { ref } from "vue";
 import BrainSynapsis from "./BrainSynapsis";
 import { nextPoint } from "../helpers/NextPoint";
 import { initPoints } from "../helpers/Points";
+import StrategyPanel from "./StrategiesPanel.vue";
+import { config } from "../../brainmotion.config";
+import strategiesStore from '../strategies/strategies';
+
 
 function reset() {
   this.points.forEach((point) => {
@@ -43,14 +49,17 @@ function reset() {
 }
 
 function nextStep(ctx) {
-  const _nextPoint = nextPoint(ctx.currentPosition, ctx.points);
+  const _nextPoint = nextPoint(ctx.currentPosition, ctx.points, strategiesStore);
 
   if (!_nextPoint) {
     ctx.log.push({ steps: ctx.steps, success: false });
     ctx.failed = true;
     ctx.points.forEach((point) => {
       if (point.visited && !point.successfullBefore)
-        point.weight = Math.max(point.weight + parseInt(ctx.weightModificationOnFailure), 1);
+        point.weight = Math.max(
+          point.weight + parseInt(ctx.weightModificationOnFailure),
+          1
+        );
     });
     return;
   }
@@ -85,14 +94,15 @@ export default {
   name: "Brain",
   components: {
     BrainSynapsis,
+    StrategyPanel,
   },
   props: {
     width: Number,
     height: Number,
     start: Number,
-    weightModificationOnFailure:{
-        type: Number,
-        default: 0
+    weightModificationOnFailure: {
+      type: Number,
+      default: 0,
     },
     destination: Number,
   },
@@ -115,9 +125,15 @@ export default {
       minSuccessfullSteps: -1,
       reset,
       log: [],
+      config,
+      strategies: ref({}),
     };
   },
   methods: {
+    updateStrategies(ctx) {
+        console.log('updatestrategies',ctx)
+      this.strategies = ctx.strategies;
+    },
     getPoint(nr) {
       return this.points[nr];
     },
